@@ -49,45 +49,28 @@
  * }
  */
 
-var (
-	midList []int
-)
+ func isMirror(l ,r *TreeNode) bool {
 
-func midDP(root *TreeNode){
-	if root == nil{
-		return
+	if l==nil && r == nil {
+		return true
 	}
 
-	midDP(root.Left)
-	midList = append(midList,root.Val)
-	midDP(root.Right)
-}
+	 if l != nil && r != nil && l.Val == r.Val{
+		 return isMirror(l.Left,r.Right) && isMirror(l.Right,r.Left)
+
+	 } else{
+		 return false
+	 }
+
+	 return false
+ }
 
 func isSymmetric(root *TreeNode) bool {
 	if root == nil {
 		return true
 	}
 
-	midList = make([]int, 0)
-	midDP(root)
-
-	var l int = 0
-	var r int = len(midList) - 1
-	if r == 0{
-		return true
-	}
-
-	for l <= r {
-
-		if midList[l] != midList[r]{
-			return false
-		}
-
-		l++
-		r--
-	}
-
-	return true
+	return isMirror(root,root)
 }
 // @lc code=end
 
