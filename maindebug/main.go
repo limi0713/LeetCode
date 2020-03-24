@@ -132,8 +132,8 @@ func subtractProductAndSum(n int) int {
 	pro := 1
 
 	for n > 0 {
-		i := n%10
-		n = n/10
+		i := n % 10
+		n = n / 10
 
 		sum += i
 		pro = pro * i
@@ -146,42 +146,42 @@ func subtractProductAndSum(n int) int {
 }
 
 func isMatch(s string, p string) bool {
-	if p ==".*"{
+	if p == ".*" {
 		return true
 	}
 
-	if len(s)== 0 && len(p)==2 &&p[1:2]=="*"{
+	if len(s) == 0 && len(p) == 2 && p[1:2] == "*" {
 		return true
 	}
 
-	if len(s)<=0 {
+	if len(s) <= 0 {
 		return false
 	}
 
-	if len(s)>0 && len(p)<=0{
+	if len(s) > 0 && len(p) <= 0 {
 		return false
 	}
 
-	if len(p) == 1{
-		if p[0:1]=="." || s[0:1]==p[0:1]{
-			return isMatch(s[1:],p[1:])
-		}else{
+	if len(p) == 1 {
+		if p[0:1] == "." || s[0:1] == p[0:1] {
+			return isMatch(s[1:], p[1:])
+		} else {
 			return false
 		}
 	}
 
-	if len(p)>1{
-		if p[0:2]==".*"{
-			return isMatch(s,p[2:]) || isMatch(s[1:],p[2:]) || isMatch(s[1:],p)
-		}else if p[0:1]=="."{
-			return isMatch(s[1:],p[1:])
-		}else if p[1:2] == "*"{
-			return isMatch(s[1:],p[2:]) || isMatch(s[1:],p) || isMatch(s,p[2:])
+	if len(p) > 1 {
+		if p[0:2] == ".*" {
+			return isMatch(s, p[2:]) || isMatch(s[1:], p[2:]) || isMatch(s[1:], p)
+		} else if p[0:1] == "." {
+			return isMatch(s[1:], p[1:])
+		} else if p[1:2] == "*" {
+			return isMatch(s[1:], p[2:]) || isMatch(s[1:], p) || isMatch(s, p[2:])
 		}
 	}
 	return false
 }
 
 func main() {
-	fmt.Println(isMatch("aab","c*a*b"))
+	fmt.Println(isMatch("aab", "c*a*b"))
 }
