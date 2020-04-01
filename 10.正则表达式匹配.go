@@ -75,40 +75,34 @@
 
 // @lc code=start
 func isMatch(s string, p string) bool {
-		if p ==".*"{
-			return true
-		}
+    if len(p) == 0{
+        return len(s) == 0
+    }
 
-		if len(s)== 0 && len(p)==2 &&p[1:2]=="*"{
-			return true
-		}
+    var  headMatch bool
+    if len(s)>0{
+        headMatch = matchFirst(s[0:1],p[0:1])
+    }
 
-		if len(s)<=0 {
-			return false
-		}
+    if len(p)>=2 && p[1:2] == "*" {
+        return isMatch(s,p[2:]) || (headMatch && isMatch(s[1:],p)) || (headMatch && isMatch(s[1:],p[2:]))
+    }else{
+        return headMatch && isMatch(s[1:],p[1:])
+    }
 
-		if len(s)>0 && len(p)<=0{
-			return false
-		}
+    return false
+}
 
-		if len(p) == 1{
-			if p[0:1]=="." || s[0:1]==p[0:1]{
-				return isMatch(s[1:],p[1:])
-			}else{
-				return false
-			}
-		}
+func matchFirst(s ,f string)bool{
+    if f == "." {
+        return true
+    }
 
-		if len(p)>1{
-			if p[0:2]==".*"{
-				return isMatch(s,p[2:]) || isMatch(s[1:],p[2:])||isMatch(s[1:],p)
-			}else if p[0:1]=="."{
-				return isMatch(s[1:],p[1:])
-			}else if p[1:2] == "*"{
-				return isMatch(s[1:],p[2:])||isMatch(s[1:],p)||isMatch(s,p[2:])
-			}
-		}
-		return false
+    if s == f {
+        return true
+    }    
+
+    return false
 }
 // @lc code=end
 
