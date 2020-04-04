@@ -109,30 +109,24 @@ func isValidSudoku(board [][]byte) bool {
 func isValidSudokuIndex(board [][]byte, i, j int) bool {
 	
 	
-	if judgeDep(board[i]) {
-		return false
-	}
+	for k:= 0;k < 9 ; k++ {
+		if board[i][k] == board[i][j] && k != j{
+			return false
+		}
 
-	temp := make([]byte,0)
-	for k:=0; k < 9; k ++ {
-		temp = append(temp,board[k][j])
-	}
-
-	if judgeDep(temp) {
-		return false
-	}
-
-	startI,startJ := i/3 * 3, j/3 * 3
-	temp = make([]byte,0)
-
-	for ti := startI;ti < startI + 3; ti ++ {
-		for tj := startJ; tj < startJ + 3; tj ++ {
-			temp = append(temp,board[ti][tj])
+		if board[k][j] == board[i][j] && k != i{
+			return false
 		}
 	}
 
-	if judgeDep(temp) {
-		return false
+	startI,startJ := i/3 * 3, j/3 * 3
+
+	for ti := startI;ti < startI + 3; ti ++ {
+		for tj := startJ; tj < startJ + 3; tj ++ {
+			if board[ti][tj] == board[i][j] && (ti != i || tj != j){
+				return false
+			}
+		}
 	}
 
 	return true
@@ -144,13 +138,9 @@ var (
 
 func solver(board [][]byte)bool{
 
-	havePoint := false
-
 	for i := 0; i < 9; i ++{
 		for j := 0; j < 9; j ++ {
 			if board[i][j] == '.' {
-
-				havePoint = true
 				for _, k := range chArray {
 					board[i][j] = k
 					
@@ -168,11 +158,7 @@ func solver(board [][]byte)bool{
 		}
 	}
 
-	if !havePoint {
-		return true
-	}
-
-	return false
+	return true
 }
 
 func solveSudoku(board [][]byte)  {
