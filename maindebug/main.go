@@ -277,4 +277,22 @@ func main() {
 	for i := range strs {
 		fmt.Println(strs[i])
 	}
+
+	var nums [3]int
+	nums[0] = 1
+	nums[1] = 2
+	sort(nums)
+
+	fmt.Println(nums[0])
+	fmt.Println(nums[1])
+}
+
+func sort(arr [3]int) {
+	arr[0] = 5
+	arr[1] = 6
+}
+
+func sort2(arr *[]int) {
+	(*arr)[0] = 3
+	(*arr)[1] = 4
 }
