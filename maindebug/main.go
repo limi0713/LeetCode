@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 var topIndex int
 
@@ -268,5 +271,10 @@ func multiply(num1 string, num2 string) string {
 }
 
 func main() {
-	fmt.Println(multiply("123", "456"))
+	str := "1*2*3"
+	strs := strings.Split(str, "*")
+
+	for i := range strs {
+		fmt.Println(strs[i])
+	}
 }
