@@ -182,6 +182,91 @@ func isMatch(s string, p string) bool {
 	return false
 }
 
+func strNumAdd(str1, str2 string) string {
+	if len(str1) > len(str2) {
+		str1, str2 = str2, str1
+	}
+
+	ans := ""
+	carry := 0
+	leng1, leng2 := len(str1), len(str2)
+	for i := 1; i <= leng1; i++ {
+		sum := int(str1[leng1-i]-'0') + int(str2[leng2-i]-'0') + carry
+		ans = fmt.Sprintf("%d", sum%10) + ans
+		carry = sum / 10
+	}
+
+	for i := leng1 + 1; i <= leng2; i++ {
+		sum := int(str2[leng2-i]-'0') + carry
+		ans = fmt.Sprintf("%d", sum%10) + ans
+		carry = sum / 10
+	}
+
+	if carry != 0 {
+		ans = fmt.Sprintf("%d", carry) + ans
+	}
+
+	return ans
+}
+
+func product(nums string, ch byte) string {
+	if ch == '0' {
+		return "0"
+	}
+
+	carry := 0
+	num := int(ch - '0')
+
+	res := ""
+	for i := len(nums) - 1; i >= 0; i-- {
+		numi := int(nums[i] - '0')
+
+		prod := num*numi + carry
+
+		res = fmt.Sprintf("%d", prod%10) + res
+		carry = prod / 10
+
+	}
+
+	if carry != 0 {
+		res = fmt.Sprintf("%d", carry) + res
+	}
+
+	return res
+}
+
+func multiply(num1 string, num2 string) string {
+	if len(num1) < len(num2) {
+		num1, num2 = num2, num1
+	}
+
+	if num2 == "0" {
+		return "0"
+	}
+
+	productMap := make(map[byte]string)
+
+	ans := ""
+
+	leng2 := len(num2)
+	for i := leng2 - 1; i >= 0; i-- {
+		v := productMap[num2[i]]
+		if v == "" {
+			v = product(num1, num2[i])
+			productMap[num2[i]] = v
+		}
+
+		temp := v
+		for j := 0; j < leng2-1-i; j++ {
+			temp += "0"
+		}
+
+		ans = strNumAdd(ans, temp)
+	}
+
+	return ans
+}
+
 func main() {
-	fmt.Println(isMatch("aab", "c*a*b"))
+	fmt.Println(multiply("123", "456"))
 }
