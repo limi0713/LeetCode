@@ -55,43 +55,17 @@
  */
 
 // @lc code=start
-func sort(arr []int){
-	if len(arr) <= 0 {
-		return
-	}
-
-	ls := list.New()
-	ls.PushBack(arr[0])
-
-	for i := 1; i < len(arr); i ++ {
-		end := ls.Back()
-
-		for end != nil && math.Abs(float64(end.Value.(int))) > math.Abs(float64(arr[i])) {
-			end = end.Prev()
-		}
-
-		if end == nil {
-			ls.PushFront(arr[i])
-		} else {
-			ls.InsertAfter(arr[i], end)
-		}
-	}
-
-	start := ls.Front()
-	for i := 0; i < len(arr); i ++ {
-		arr[i] = start.Value.(int)
-		start = start.Next()
-	}
-}
-
 func canReorderDoubled(A []int) bool {
-	sort(A)
-
 	numsMap := make(map[int]int)
 
 	for i := range A {
+		if A[i] < 0 {
+			A[i] = - A[i]
+		}
 		numsMap[A[i]] = numsMap[A[i]] + 1
 	}
+
+	sort.Ints(A)
 
 	for i := range A {
 		if v, ok := numsMap[A[i]]; ok && v > 0 {
