@@ -35,6 +35,10 @@ func dfs(ans *[][]int, nums, cur []int, hadAdd map[int]bool){
 	}
 
 	for i := range nums {
+
+		// nums[i-1]一定比nums[i]先搜索到，
+		// 当搜索起点为i时，表示起点i-1已被搜索过
+		// nums[i]==nums[i-1]则，nums[i]作为起点和nums[i-1]重复，剪枝
 		if  _, ok := hadAdd[i-1]; i > 0 && nums[i] == nums[i-1] && !ok{
 			continue
 		}
