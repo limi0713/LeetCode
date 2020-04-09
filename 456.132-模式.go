@@ -51,8 +51,53 @@
  */
 
 // @lc code=start
+func handleNums(nums, flag []int){
+	if len(nums) == 0 || len(flag) == 0 {
+		return
+	}
+
+	flag[0] = nums[0]
+
+	min := 0
+	for i := range nums {
+		flag[i] = nums[min]
+
+		if i > min && nums[i] < nums[min] {
+			min = i
+		}
+	}
+
+	return
+}
+
+func find(nums []int, start int, min int) int {
+
+	for i := start; i < len(nums); i ++ {
+		if nums[i] > min && nums[i] < nums[start - 1]{
+			return i
+		}
+	}
+
+	return -1
+}
+
 func find132pattern(nums []int) bool {
 
+	flag := make([]int,len(nums))
+
+	handleNums(nums, flag)
+
+	for i := 1; i < len(nums) - 1; i ++ {
+		if flag[i] >= nums[i] {
+			continue
+		}
+
+		if index := find(nums,i+1,flag[i]); index >= 0 {
+			return true
+		}
+	}
+
+	return false
 }
 // @lc code=end
 

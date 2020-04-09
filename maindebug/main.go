@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
 var topIndex int
@@ -271,20 +270,7 @@ func multiply(num1 string, num2 string) string {
 }
 
 func main() {
-	str := "1*2*3"
-	strs := strings.Split(str, "*")
-
-	for i := range strs {
-		fmt.Println(strs[i])
-	}
-
-	var nums [3]int
-	nums[0] = 1
-	nums[1] = 2
-	sort(nums)
-
-	fmt.Println(nums[0])
-	fmt.Println(nums[1])
+	find132pattern([]int{1, -4, 2, -1, 3, -3, -4, 0, -3, -1})
 }
 
 func sort(arr [3]int) {
@@ -295,4 +281,51 @@ func sort(arr [3]int) {
 func sort2(arr *[]int) {
 	(*arr)[0] = 3
 	(*arr)[1] = 4
+}
+
+func handleNums(nums, flag []int) {
+	if len(nums) == 0 || len(flag) == 0 {
+		return
+	}
+
+	flag[0] = nums[0]
+
+	min := 0
+	for i := range nums {
+		flag[i] = nums[min]
+
+		if i > min && nums[i] < nums[min] {
+			min = i
+		}
+	}
+
+	return
+}
+
+func find(nums []int, start int, min int) int {
+
+	for i := start; i < len(nums); i++ {
+		if nums[i] > min && nums[i] < nums[start-1] {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func find132pattern(nums []int) bool {
+
+	flag := make([]int, len(nums))
+
+	for i := 1; i < len(nums)-1; i++ {
+		if flag[i] >= nums[i] {
+			continue
+		}
+
+		if index := find(nums, i+1, flag[i]); index >= 0 {
+			return true
+		}
+	}
+
+	return false
 }
