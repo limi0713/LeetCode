@@ -44,7 +44,109 @@
 
 // @lc code=start
 func solveNQueens(n int) [][]string {
+	strs := make([]string,0)
+	for i :=0; i < n; i ++ {
+		str :=getPoint(i) + "Q" + getPoint(n - i - 1)
+		strs = append(strs, str)
+	}
 
+	ans := make([][]string, 0)
+
+	flag := make([][]int,0)
+	for i := 0; i < n; i ++ {
+		f := make([]int,n)
+		flag = append(flag,f)
+	}
+
+	dfs(&ans, n, 0, strs, []string{}, flag)
+
+	return ans
+}
+
+func dfs(ans *[][]string, n, row int, strs, cur []string, flag [][]int){
+	if row == n && len(cur) == n {
+		*ans = append(*ans, cur)
+		return
+	}
+
+	if row >= n {
+		return
+	}
+
+	for i := 0; i < len(strs); i ++ {
+		if flag[row][i] == 0 {
+			setFlag(flag,n,row,i)
+
+			temp := make([]string,0)
+			temp = append(temp,cur...)
+			temp = append(temp, strs[i])
+
+			dfs(ans, n, row + 1, strs, temp, flag)
+
+			resetFlag(flag,n,row,i)
+		}
+	}
+
+}
+
+func setFlag(flag [][]int, n, row, column int){
+
+	for i:= 0; i < n; i ++ {
+		flag[row][i] += 1 
+		flag[i][column] += 1 
+
+		if row - i >= 0 && column - i >= 0 {
+			flag[row-i][column-i] += 1 
+		} 
+
+		if row - i >= 0 && column + i < n {
+			flag[row-i][column+i] += 1 
+		} 
+
+		if row + i < n && column - i >= 0 {
+			flag[row+i][column-i] += 1 
+		} 
+
+		if row + i < n && column + i < n {
+			flag[row+i][column+i] += 1 
+		} 
+
+	}
+}
+
+func resetFlag(flag [][]int, n, row, column int){
+
+	for i:= 0; i < n; i ++ {
+		flag[row][i] -= 1 
+		flag[i][column] -= 1
+
+		if row - i >= 0 && column - i >= 0 {
+			flag[row-i][column-i] -= 1
+		} 
+
+		if row - i >= 0 && column + i < n {
+			flag[row-i][column+i] -= 1
+		} 
+
+		if row + i < n && column - i >= 0 {
+			flag[row+i][column-i] -= 1
+		} 
+
+		if row + i < n && column + i < n {
+			flag[row+i][column+i] -= 1
+		} 
+
+	}
+}
+
+
+func getPoint(n int) string {
+	res := ""
+	for i := 0; i < n; i ++ {
+		res += "."
+	}
+
+	return res
 }
 // @lc code=end
 
