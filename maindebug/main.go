@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 var topIndex int
@@ -270,7 +271,13 @@ func multiply(num1 string, num2 string) string {
 }
 
 func main() {
-	find132pattern([]int{1, -4, 2, -1, 3, -3, -4, 0, -3, -1})
+	str := "/a/b/c/"
+
+	strs := strings.Split(str, "/")
+
+	for i := range strs {
+		fmt.Printf("i: %d, s :%s\n", i, strs[i])
+	}
 }
 
 func sort(arr [3]int) {
