@@ -59,6 +59,17 @@
 // @lc code=start
 func setZeroes(matrix [][]int)  {
 
+	// 函数变量声明方式
+	// var myFunc func(int,int) = func(i,j int){
+	// 	for k := 0; k < len(matrix[i]);k ++ {
+	// 		matrix[i][k]=0
+	// 	}
+
+	// 	for k := 0; k < len(matrix); k ++ {
+	// 		matrix[k][j] = 0
+	// 	}
+	// }
+
 	myFunc := func(i,j int) {
 		for k := 0; k < len(matrix[i]);k ++ {
 			matrix[i][k]=0
