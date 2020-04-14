@@ -18,7 +18,7 @@ func sortColors(nums []int)  {
 		}else if nums[i] == 2 {
 			nums[i], nums[left2] = nums[left2], nums[i]
 			left2 --
-			i --
+			i -- // 将后面没有处理的数交换到前面，需要回退一步
 		}
 	}
 }
