@@ -329,9 +329,49 @@ func minWindow(s string, t string) string {
 }
 
 func main() {
-	fmt.Println(minWindow("ADOBECODEBANC", "ABC"))
+	combine(4, 2)
 }
 
+func combine(n int, k int) [][]int {
+	if n < k {
+		return [][]int{}
+	}
+
+	ans := make([][]int, 0)
+
+	cur := make([]int, 0, k)
+
+	dfs(&ans, n, k, cur)
+
+	return ans
+}
+
+func dfs(ans *[][]int, n, k int, cur []int) {
+	fmt.Printf("cur addr : %p ,", cur)
+	fmt.Println(cur)
+	if len(cur) == k {
+		// temp := make([]int, 0, len(cur))
+		// temp = append(temp, cur...)
+		*ans = append(*ans, cur)
+		return
+	}
+
+	start := 1
+	if len(cur) > 0 {
+		start = cur[len(cur)-1] + 1
+	}
+	for ; start <= n; start++ {
+		// temp := make([]int,0)
+		// temp = append(temp, cur...)
+		// temp = append(temp, start)
+		// dfs(ans,n,k,temp)
+
+		leng := len(cur)
+		cur = append(cur, start)
+		dfs(ans, n, k, cur)
+		cur = cur[:leng]
+	}
+}
 func sort(arr [3]int) {
 	arr[0] = 5
 	arr[1] = 6

@@ -38,14 +38,18 @@ func combine(n int, k int) [][]int {
 
 	ans := make([][]int,0)
 
-	dfs(&ans,n,k,[]int{})
+	cur := make([]int, 0, k)
+	dfs(&ans,n,k,cur)
 
 	return ans
 }
 
 func dfs(ans *[][]int, n,k int, cur []int) {
 	if len(cur) == k {
-		*ans = append(*ans, cur)
+		temp := make([]int,k)
+		// temp = append(temp, cur...)
+		copy(temp, cur) // copy 效率高于append
+		*ans = append(*ans, temp)
 		return
 	}
 
@@ -54,11 +58,15 @@ func dfs(ans *[][]int, n,k int, cur []int) {
 		start = cur[len(cur)-1] + 1
 	}
 	for ;start<=n;start ++ {
-		temp := make([]int,0)
-		temp = append(temp, cur...)
-		temp = append(temp, start)
+		// temp := make([]int,0)
+		// temp = append(temp, cur...)
+		// temp = append(temp, start)
+		// dfs(ans,n,k,temp)
 
-		dfs(ans,n,k,temp)
+		leng := len(cur)
+		cur = append(cur, start)
+		dfs(ans,n,k,cur)
+		cur = cur[:leng]
 	}
 }
 // @lc code=end
