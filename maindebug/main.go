@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
 var topIndex int
@@ -270,14 +269,67 @@ func multiply(num1 string, num2 string) string {
 	return ans
 }
 
-func main() {
-	str := "/a/b/c/"
+func handleStrToMap(s string) map[byte]int {
+	numsMap := make(map[byte]int)
 
-	strs := strings.Split(str, "/")
-
-	for i := range strs {
-		fmt.Printf("i: %d, s :%s\n", i, strs[i])
+	for i := range s {
+		numsMap[s[i]] += 1
 	}
+
+	return numsMap
+}
+
+func judgeSubValid(s, t map[byte]int) bool {
+
+	for k, v := range t {
+		if s[k] < v {
+			return false
+		}
+	}
+
+	return true
+}
+
+func minWindow(s string, t string) string {
+	if len(s) < len(t) {
+		return ""
+	}
+
+	numsMap := handleStrToMap(t)
+
+	ans := make([]int, len(s))
+	ans[0] = len(s)
+
+	subStrMap := handleStrToMap(s[:len(t)])
+	minAnsIndex := 0
+	indexStart := 0
+	for i := len(t); i <= len(s) && indexStart <= len(s)-len(t); {
+		if judgeSubValid(subStrMap, numsMap) {
+			ans[indexStart] = i - indexStart
+			if ans[indexStart] == len(t) {
+				return s[indexStart:i]
+			}
+
+			if ans[indexStart] < ans[minAnsIndex] {
+				minAnsIndex = indexStart
+			}
+
+			subStrMap[s[indexStart]] -= 1
+			indexStart++
+		} else {
+			if i >= len(s) {
+				break
+			}
+			subStrMap[s[i]] += 1
+			i++
+		}
+	}
+
+	return s[minAnsIndex : minAnsIndex+ans[minAnsIndex]]
+}
+
+func main() {
+	fmt.Println(minWindow("ADOBECODEBANC", "ABC"))
 }
 
 func sort(arr [3]int) {
