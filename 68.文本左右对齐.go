@@ -142,6 +142,7 @@ func joinStrWithSpace(words *[]string, start, end, count int) string {
 	return res
 }
 
+// strings.Repeat(s,count)  重复s字符串count次
 func getLengSpace(leng int) string {
 	res := ""
 
