@@ -4,6 +4,25 @@ import (
 	"fmt"
 )
 
+func main() {
+	j := 10
+
+	b := func() func() {
+		i := 11
+		j++
+		return func() {
+			fmt.Println(i, j)
+			i++
+		}
+	}
+
+	a := b()
+
+	a()
+
+	a()
+}
+
 var topIndex int
 
 var charStack []rune
@@ -326,10 +345,6 @@ func minWindow(s string, t string) string {
 	}
 
 	return s[minAnsIndex : minAnsIndex+ans[minAnsIndex]]
-}
-
-func main() {
-	combine(4, 2)
 }
 
 func combine(n int, k int) [][]int {

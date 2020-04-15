@@ -80,8 +80,76 @@
 
 // @lc code=start
 func fullJustify(words []string, maxWidth int) []string {
+	if len(words) <= 0 {
+		return []string{getLengSpace(maxWidth)}
+	}
+
 	ans := make([]string, 0)
 	
+	index := 0
+	leng := len(words[index])
+	for i := 1;i < len(words); i ++ {
+		if leng + 1 + len(words[i]) < maxWidth {
+			leng = leng + 1 + len(words[i])
+		}else if leng + 1 + len(words[i]) == maxWidth {
+			ans = append(ans, getStr(&words,index,i,maxWidth,maxWidth),)
+			index = i + 1
+			leng = -1
+		} else {
+			ans = append(ans,getStr(&words,index,i-1,maxWidth,leng))
+			index = i
+			leng = -1
+			i --
+		}
+	}
+
+	if index < len(words) {
+		ans = append(ans,getStr(&words,index,len(words) - 1,maxWidth,leng))
+	}
+
+	return ans
+}
+
+func getStr(words *[]string, start, end, maxWidth, curLen int) string {
+	if curLen == maxWidth {
+		return joinStrWithSpace(words,start,end,1)
+	}
+
+	if start == end {
+		return (*words)[start] + getLengSpace(maxWidth-len((*words)[start]))
+	}
+
+	if end == len(*words) - 1{
+		words := joinStrWithSpace(words,start,end,1)
+		return words + getLengSpace(maxWidth -len(words))
+	}
+
+	wordsCount := end - start + 1
+	spaceCount := maxWidth - curLen + wordsCount - 1
+	minSpaceLen := spaceCount / (wordsCount - 1)
+	maxSpaceCount := spaceCount % (wordsCount - 1)
+
+	return joinStrWithSpace(words,start,start+maxSpaceCount,minSpaceLen+1) + getLengSpace(minSpaceLen) + joinStrWithSpace(words,start+maxSpaceCount+1,end,minSpaceLen)
+}
+
+func joinStrWithSpace(words *[]string, start, end, count int) string {
+	res := (*words)[start]
+
+	for i:=start+1;i<=end;i++{
+		res += getLengSpace(count) + (*words)[i]
+	}
+
+	return res
+}
+
+func getLengSpace(leng int) string {
+	res := ""
+
+	for i:=0;i<leng;i++{
+		res += " "
+	}
+
+	return res
 }
 // @lc code=end
 
