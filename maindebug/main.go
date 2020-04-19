@@ -5,22 +5,41 @@ import (
 )
 
 func main() {
-	j := 10
 
-	b := func() func() {
-		i := 11
-		j++
-		return func() {
-			fmt.Println(i, j)
-			i++
-		}
+	findMinFibonacciNumbers(7)
+}
+
+func findMinFibonacciNumbers(k int) int {
+	arr := handle(k)
+
+	return dp(arr, k)
+}
+
+func handle(k int) []int {
+	arr := make([]int, 0)
+	arr = append(arr, 1, 1)
+
+	for i := 2; arr[i-1] < k; i++ {
+		arr = append(arr, arr[i-1]+arr[i-2])
 	}
 
-	a := b()
+	return arr
+}
 
-	a()
+func dp(arr []int, k int) int {
 
-	a()
+	ans := 0
+
+	i := len(arr) - 1
+	for k > 0 {
+		if k >= arr[i] {
+			ans++
+			k -= arr[i]
+		}
+		i--
+	}
+
+	return ans
 }
 
 var topIndex int
