@@ -4,9 +4,42 @@ import (
 	"fmt"
 )
 
-func main() {
+type MyT struct{ a int }
 
-	findMinFibonacciNumbers(7)
+func (t MyT) pri1() { fmt.Println(" 1 ") }
+
+// func (t *MyT) pri1() { // 自动生成
+// 	(*t).pri1()
+// }
+func (t *MyT) pri2() { fmt.Println(" 2 ") }
+
+// func (t MyT) pri2() { //不会自动生成
+// 	(&t).pri2()
+// }
+
+type MTI interface {
+	pri1()
+	pri2()
+}
+
+type MyT2 struct{ a int }
+
+func (t MyT2) pri1()  { fmt.Println(" 3 ") }
+func (t *MyT2) pri2() { fmt.Println(" 4 ") }
+
+func main() {
+	var t MyT
+	var b MTI = &t
+	b.pri1()
+	t.pri2()
+
+	// var t2 MyT2
+	// b = t2
+	// b.pri1()
+
+	var a *MyT = nil
+	a.pri1()
+	a.pri6()
 }
 
 func findMinFibonacciNumbers(k int) int {
