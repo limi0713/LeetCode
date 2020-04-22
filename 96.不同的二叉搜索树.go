@@ -32,7 +32,25 @@
 
 // @lc code=start
 func numTrees(n int) int {
+	if n <= 1{
+		return 1
+	}
 
+	ans := make([]int,n+1)
+	ans[0],ans[1],ans[2] =1,1,2
+
+	for i:=3;i<=n;i++{
+		for j:=0;j< i/2;j++{
+			ans[i] += ans[j] * ans[i-1-j]
+		}
+
+		ans[i] *=2
+		if i % 2 != 0 {
+			ans[i] += ans[(i-1)/2] * ans[(i-1)/2]
+		}
+	}
+
+	return ans[n]
 }
 // @lc code=end
 
