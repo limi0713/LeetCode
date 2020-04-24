@@ -28,8 +28,14 @@ func (t MyT2) pri1()  { fmt.Println(" 3 ") }
 func (t *MyT2) pri2() { fmt.Println(" 4 ") }
 
 func main() {
-	nums := []int{7, 5, 6, 4}
-	reversePairs(nums)
+	nums := make([]int, 100)
+	fmt.Println(len(nums), cap(nums))
+
+	nums = append(nums, make([]int, 200)...)
+	fmt.Println(len(nums), cap(nums))
+
+	nums = nums[0:0:99]
+	fmt.Println(len(nums), cap(nums))
 }
 
 func reversePairs(nums []int) int {
