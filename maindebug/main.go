@@ -28,18 +28,75 @@ func (t MyT2) pri1()  { fmt.Println(" 3 ") }
 func (t *MyT2) pri2() { fmt.Println(" 4 ") }
 
 func main() {
-	var t MyT
-	var b MTI = &t
-	b.pri1()
-	t.pri2()
+	nums := []int{7, 5, 6, 4}
+	reversePairs(nums)
+}
 
-	// var t2 MyT2
-	// b = t2
-	// b.pri1()
+func reversePairs(nums []int) int {
+	ans := 0
 
-	var a *MyT = nil
-	a.pri1()
-	a.pri6()
+	merge(&nums, 0, len(nums)-1, &ans)
+
+	return ans
+
+}
+
+func merge(nums *[]int, start, end int, ans *int) {
+	if start >= end {
+		return
+	}
+
+	if start+1 == end {
+		if (*nums)[start] > (*nums)[end] {
+			*ans += 1
+			swap(nums, start, end)
+		}
+		return
+	}
+
+	mid := start + (end-start)/2
+	merge(nums, start, mid, ans)
+	merge(nums, mid+1, end, ans)
+
+	i, j := mid, end
+
+	temp := make([]int, end-start+1)
+	indexOfTemp := len(temp) - 1
+
+	for i >= start && j > mid {
+		if (*nums)[i] > (*nums)[j] {
+			*ans += j - mid
+			temp[indexOfTemp] = (*nums)[i]
+			i--
+
+		} else {
+			temp[indexOfTemp] = (*nums)[j]
+			j--
+		}
+
+		indexOfTemp--
+	}
+
+	for i >= start {
+		temp[indexOfTemp] = (*nums)[i]
+		i--
+		indexOfTemp--
+	}
+
+	for j > mid {
+		temp[indexOfTemp] = (*nums)[j]
+		j--
+		indexOfTemp--
+		// *ans += mid - start + 1
+	}
+
+	for i := range temp {
+		(*nums)[start+i] = temp[i]
+	}
+}
+
+func swap(nums *[]int, i, j int) {
+	(*nums)[i], (*nums)[j] = (*nums)[j], (*nums)[j]
 }
 
 func findMinFibonacciNumbers(k int) int {
