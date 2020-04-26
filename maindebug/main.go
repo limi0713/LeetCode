@@ -27,15 +27,60 @@ type MyT2 struct{ a int }
 func (t MyT2) pri1()  { fmt.Println(" 3 ") }
 func (t *MyT2) pri2() { fmt.Println(" 4 ") }
 
+//, 5, 7, 11, 13, 17, 19, 11, 3, 11
 func main() {
-	nums := make([]int, 100)
-	fmt.Println(len(nums), cap(nums))
+	fmt.Println(splitArray([]int{2, 3, 2, 5, 7, 11}))
+}
 
-	nums = append(nums, make([]int, 200)...)
-	fmt.Println(len(nums), cap(nums))
+func splitArray(nums []int) int {
+	if len(nums) <= 1 {
+		return 1
+	}
 
-	nums = nums[0:0:99]
-	fmt.Println(len(nums), cap(nums))
+	index := make([]int, 0, len(nums)+1)
+
+	return splitWithIndex(nums, len(nums)-1, &index)
+}
+
+func splitWithIndex(nums []int, end int, index *[]int) int {
+	if end == 0 {
+		return 1
+	}
+
+	if end == 1 {
+		if gcd(nums[0], nums[1]) > 1 {
+			return 1
+		}
+
+		*index = append(*index, 1)
+		return 2
+	}
+
+	if gcd(nums[0], nums[end]) > 1 {
+		*index = (*index)[: 0 : len(nums)+1]
+		return 1
+	}
+
+	indexBefore := splitWithIndex(nums, end-1, index)
+
+	if len(*index) == 0 && gcd(nums[0], nums[end]) > 1 {
+		*index = (*index)[: 0 : len(nums)+1]
+		return 1
+	}
+
+	if len(*index) > 0 && gcd(nums[end], nums[(*index)[len(*index)-1]]) > 1 {
+		return indexBefore
+	}
+
+	*index = append(*index, end)
+	return indexBefore + 1
+}
+
+func gcd(a, b int) int {
+	for b > 0 {
+		a, b = b, a%b
+	}
+	return a
 }
 
 func reversePairs(nums []int) int {
