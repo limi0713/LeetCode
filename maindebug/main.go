@@ -17,15 +17,21 @@ func (t *MyT) pri2() { fmt.Println(" 2 ") }
 // 	(&t).pri2()
 // }
 
-type MTI interface {
-	pri1()
-	pri2()
-}
+// type MTI interface {
+// 	pri1()
+// 	pri2()
+// }
 
 type MyT2 struct{ a int }
 
-func (t MyT2) pri1()  { fmt.Println(" 3 ") }
-func (t *MyT2) pri2() { fmt.Println(" 4 ") }
+func (t MyT2) pri1() {
+	fmt.Printf("%p, %v\n", &t, t)
+}
+
+func (t *MyT2) pri2() {
+	fmt.Printf("%p, %v\n", t, t)
+	// fmt.Println("hello")
+}
 
 //, 5, 7, 11, 13, 17, 19, 11, 3, 11
 func main() {
@@ -81,6 +87,17 @@ func gcd(a, b int) int {
 		a, b = b, a%b
 	}
 	return a
+	tt := MyT2{a: 2}
+	fmt.Printf("%p\n", &tt)
+	tt.pri1()
+	tt.pri2()
+
+	fmt.Println()
+
+	ttt := &MyT2{a: 3}
+	fmt.Printf("%p\n", ttt)
+	ttt.pri1()
+	ttt.pri2()
 }
 
 func reversePairs(nums []int) int {
