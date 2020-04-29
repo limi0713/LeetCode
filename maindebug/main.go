@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 )
 
 type MyT struct{ a int }
@@ -36,6 +37,7 @@ func (t *MyT2) pri2() {
 //, 5, 7, 11, 13, 17, 19, 11, 3, 11
 func main() {
 	fmt.Println(splitArray([]int{2, 3, 2, 5, 7, 11}))
+	log.Fatal()
 }
 
 func splitArray(nums []int) int {
