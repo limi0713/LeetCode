@@ -57,8 +57,6 @@
 
 package main
 
-import "fmt"
-
 // @lc code=start
 func findRedundantConnection(edges [][]int) []int {
 	flag := make([]int, len(edges)+1)
@@ -85,6 +83,6 @@ func findRedundantConnection(edges [][]int) []int {
 
 // @lc code=end
 
-func main() {
-	fmt.Println(findRedundantConnection([][]int{{1, 2}, {1, 3}, {2, 3}}))
-}
+// func main() {
+// 	fmt.Println(findRedundantConnection([][]int{{1, 2}, {1, 3}, {2, 3}}))
+// }
