@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 )
 
 type MyT struct{ a int }
@@ -34,10 +33,52 @@ func (t *MyT2) pri2() {
 	// fmt.Println("hello")
 }
 
-//, 5, 7, 11, 13, 17, 19, 11, 3, 11
 func main() {
-	fmt.Println(splitArray([]int{2, 3, 2, 5, 7, 11}))
-	log.Fatal()
+	fmt.Println(kthSmallest([][]int{{1, 3, 11}, {2, 4, 6}}, 5))
+}
+
+func kthSmallest(mat [][]int, k int) int {
+	left, right := 0, 0
+	for i := range mat {
+		left += mat[i][0] // 最小和
+
+		right += mat[i][len(mat[i])-1] // 最大和
+	}
+
+	min := left
+
+	for left < right {
+		mid := left + (right-left)/2 // 统计比mid小的和有多少个
+
+		leftCount := 1 // 比mid小的个数，left比mid小，所以初始为1
+
+		dfsk(mat, &leftCount, mid, min, k, 0)
+
+		if leftCount >= k {
+			right = mid
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return left
+}
+
+func dfsk(mat [][]int, count *int, mid, min, k, index int) {
+	if index >= len(mat) || *count > k || min > mid {
+		return
+	}
+
+	dfsk(mat, count, mid, min, k, index+1)
+
+	for i := 1; i < len(mat[index]); i++ {
+		if min+mat[index][i]-mat[index][0] <= mid {
+			*count += 1
+			dfsk(mat, count, mid, min+mat[index][i]-mat[index][0], k, index+1)
+		} else {
+			break
+		}
+	}
 }
 
 func splitArray(nums []int) int {
@@ -89,17 +130,6 @@ func gcd(a, b int) int {
 		a, b = b, a%b
 	}
 	return a
-	tt := MyT2{a: 2}
-	fmt.Printf("%p\n", &tt)
-	tt.pri1()
-	tt.pri2()
-
-	fmt.Println()
-
-	ttt := &MyT2{a: 3}
-	fmt.Printf("%p\n", ttt)
-	ttt.pri1()
-	ttt.pri2()
 }
 
 func reversePairs(nums []int) int {
