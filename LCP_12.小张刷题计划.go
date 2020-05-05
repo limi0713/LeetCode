@@ -38,14 +38,19 @@ func minTime(time []int, m int) int {
         right += time[i]
     }
     
+    // 二分搜索，找到最小划分
     for left < right {
         mid := (left+right) >> 1
         
+        /* 
+        假设划分最大时间是mid(扣除了分组中最大时间)
+        根据mid对time进行划分，看需要划分几组，表示需要多少天
+        */
         arrCount := splitArr(time,mid)
         
-        if arrCount > m {
+        if arrCount > m {//当划分需要的天数>m时，表示mid太小，移动left
             left = mid+1
-        }else{
+        }else{ // 当划分需要的天<=m时，表示mid值满足要求，移动right，以检验更小的mid值
             right = mid
         }
     }
@@ -54,20 +59,33 @@ func minTime(time []int, m int) int {
 }
 
 func splitArr(time []int, limit int) int {
-    count := 1
+    count := 1 // 分组数
     
+    /*
+    curSum:当前分组和
+    curMax:当前分组最大时间
+    */
     curSum,curMax := 0,0
     
     for i := range time {
         if time[i] < curMax {
+            /*
+            当前时间<curMax时，判断time[i]能否被划分到当前分组
+            */
             if curSum + time[i] - curMax <= limit {
+                // 可以划分
                 curSum += time[i]
             }else {
+                //划分到下一组，当前分组结束
                 count ++
                 curSum,curMax = time[i],time[i]
             }
         } else {
+             /*
+            当前时间>=curMax时，time[i]会被扣除，判断time[i]能否被划分到当前分组
+            */
             if curSum <= limit {
+                //划分到当前分组，并更新当前分组curMax
                 curSum += time[i]
                 curMax = time[i]
             }else {
