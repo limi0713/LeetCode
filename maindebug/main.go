@@ -34,7 +34,20 @@ func (t *MyT2) pri2() {
 }
 
 func main() {
-	fmt.Println(kthSmallest([][]int{{1, 3, 11}, {2, 4, 6}}, 5))
+	a := make([]int, 0)
+	b := new(int)
+
+	fmt.Println(a)
+	fmt.Println(b)
+
+	c := 1
+	d := &c
+	*d++
+	b = &c
+
+	fmt.Println(c)
+	fmt.Println(*d)
+	fmt.Println(b)
 }
 
 func kthSmallest(mat [][]int, k int) int {
