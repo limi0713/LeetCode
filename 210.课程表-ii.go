@@ -55,8 +55,77 @@
  */
 
 // @lc code=start
+type class struct {
+    in int
+    nextClass []int
+}
+
 func findOrder(numCourses int, prerequisites [][]int) []int {
-	
+    
+    classMap := make(map[int]class)
+    for i := 0;i<numCourses;i++{
+        classMap[i] = class{
+            in:0,
+            nextClass:make([]int,0),
+        }
+    }
+    
+    for i := range prerequisites {
+        if _,ok := classMap[prerequisites[i][0]];!ok {
+            classMap[prerequisites[i][0]] = class{
+                in : 0,
+                nextClass : make([]int,0),
+            }
+        }
+        v := classMap[prerequisites[i][0]]
+        v.in ++
+        classMap[prerequisites[i][0]] = v
+        
+        if _,ok := classMap[prerequisites[i][1]];!ok{
+            classMap[prerequisites[i][1]] = class{
+                in:0,
+                nextClass:make([]int,0),
+            }
+        }
+        v = classMap[prerequisites[i][1]]
+        v .nextClass = append(v.nextClass,prerequisites[i][0])
+        
+        classMap[prerequisites[i][1]]=v
+    }
+    
+    
+    ans := make([]int,0,numCourses)
+    for len(ans) < numCourses {
+        index := findIn0(classMap)
+        if index == -1 {
+            return []int{}
+        }
+        
+        descIn(classMap,index)
+        ans = append(ans,index)
+        delete(classMap,index)
+    }
+    return ans
+    
+}
+
+func findIn0(classMap map[int]class) int {
+    for k,v := range classMap {
+        if v.in == 0 {
+            return k
+        }
+    }
+    
+    return -1
+}
+
+func descIn(classMap map[int]class,index int) {
+    v := classMap[index]
+    for _,i := range v.nextClass {
+        v = classMap[i]
+        v.in -- 
+        classMap[i] = v
+    }
 }
 // @lc code=end
 
