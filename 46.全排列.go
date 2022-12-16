@@ -68,3 +68,34 @@ func dfs(ans *[][]int, nums, cur []int, hadAdd map[int]bool){
 
 // @lc code=end
 
+func permute(nums []int) [][]int {
+    ans := make([][]int,0)
+    
+    flag := make([]bool,len(nums))
+    
+    backtrack(&ans,nums,[]int{},&flag)
+    
+    return ans
+}
+
+func backtrack(ans *[][]int,nums,cur []int,flag *[]bool){
+    if len(cur) == len(nums) {
+        temp :=cur[:]
+        *ans = append(*ans, temp)
+        return
+    }
+    
+    for i := 0;i<len(nums);i++{
+        if (*flag)[i] {
+            continue
+        }
+        
+        (*flag)[i] = true
+        
+        temp :=cur[:]
+        temp = append(temp,nums[i])
+        backtrack(ans,nums,temp,flag)
+        
+        (*flag)[i] = false
+    }
+}

@@ -37,32 +37,51 @@
  */
 
 // @lc code=start
-func search(nums []int, target int) int { 
-	if len(nums) <= 0 {
-		return -1
-	}
-
-	maxIndex := binarySearchMax(&nums,0,len(nums))
-
+func search(nums []int, target int) int {
+    return binSearch(nums,target,0,len(nums)-1)
 }
 
-func binarySearchMax(nums *[]int, start, end int) int {
-
-	for start < end {
-		mid := start + (end - start)/2
-
-		if (*nums)[mid] > (*nums)[start] {
-			start = mid
-		}else {
-			end = mid
-		}
-	}
-
-	return start
-}
-
-func binarySearch(nums *[]int, start, end int, target int) int {
-
+func binSearch(nums []int, target, start, end int) int {
+    if start > end {
+        return -1
+    }
+    
+    if start == end {
+        if nums[start] == target {
+            return start
+        }
+        return -1
+    }
+    
+    if target == nums[start] {
+        return start
+    }
+    
+    if target == nums[end] {
+        return end
+    }
+    
+    mid := start + (end - start)/2
+    
+    if target == nums[mid] {
+        return mid
+    }
+    
+    if nums[start] > nums[mid]{
+        if target > nums[start] || target < nums[mid] {
+            return binSearch(nums,target,start+1,mid-1)
+        } else {
+            return binSearch(nums,target,mid+1,end-1)
+        }
+        
+    } else {
+        if target > nums[start] && target < nums[mid] {
+            return binSearch(nums,target,start,mid-1)
+        }
+        return binSearch(nums,target,mid+1,end-1)
+    }
+    
+    return -1
 }
 // @lc code=end
 

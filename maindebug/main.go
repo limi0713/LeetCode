@@ -17,19 +17,132 @@ func (t *MyT) pri2() { fmt.Println(" 2 ") }
 // 	(&t).pri2()
 // }
 
-type MTI interface {
-	pri1()
-	pri2()
-}
+// type MTI interface {
+// 	pri1()
+// 	pri2()
+// }
 
 type MyT2 struct{ a int }
 
-func (t MyT2) pri1()  { fmt.Println(" 3 ") }
-func (t *MyT2) pri2() { fmt.Println(" 4 ") }
+func (t MyT2) pri1() {
+	fmt.Printf("%p, %v\n", &t, t)
+}
+
+func (t *MyT2) pri2() {
+	fmt.Printf("%p, %v\n", t, t)
+	// fmt.Println("hello")
+}
 
 func main() {
-	nums := []int{7, 5, 6, 4}
-	reversePairs(nums)
+	a := make([]int, 0)
+	b := new(int)
+
+	fmt.Println(a)
+	fmt.Println(b)
+
+	c := 1
+	d := &c
+	*d++
+	b = &c
+
+	fmt.Println(c)
+	fmt.Println(*d)
+	fmt.Println(b)
+}
+
+func kthSmallest(mat [][]int, k int) int {
+	left, right := 0, 0
+	for i := range mat {
+		left += mat[i][0] // 最小和
+
+		right += mat[i][len(mat[i])-1] // 最大和
+	}
+
+	min := left
+
+	for left < right {
+		mid := left + (right-left)/2 // 统计比mid小的和有多少个
+
+		leftCount := 1 // 比mid小的个数，left比mid小，所以初始为1
+
+		dfsk(mat, &leftCount, mid, min, k, 0)
+
+		if leftCount >= k {
+			right = mid
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return left
+}
+
+func dfsk(mat [][]int, count *int, mid, min, k, index int) {
+	if index >= len(mat) || *count > k || min > mid {
+		return
+	}
+
+	dfsk(mat, count, mid, min, k, index+1)
+
+	for i := 1; i < len(mat[index]); i++ {
+		if min+mat[index][i]-mat[index][0] <= mid {
+			*count += 1
+			dfsk(mat, count, mid, min+mat[index][i]-mat[index][0], k, index+1)
+		} else {
+			break
+		}
+	}
+}
+
+func splitArray(nums []int) int {
+	if len(nums) <= 1 {
+		return 1
+	}
+
+	index := make([]int, 0, len(nums)+1)
+
+	return splitWithIndex(nums, len(nums)-1, &index)
+}
+
+func splitWithIndex(nums []int, end int, index *[]int) int {
+	if end == 0 {
+		return 1
+	}
+
+	if end == 1 {
+		if gcd(nums[0], nums[1]) > 1 {
+			return 1
+		}
+
+		*index = append(*index, 1)
+		return 2
+	}
+
+	if gcd(nums[0], nums[end]) > 1 {
+		*index = (*index)[: 0 : len(nums)+1]
+		return 1
+	}
+
+	indexBefore := splitWithIndex(nums, end-1, index)
+
+	if len(*index) == 0 && gcd(nums[0], nums[end]) > 1 {
+		*index = (*index)[: 0 : len(nums)+1]
+		return 1
+	}
+
+	if len(*index) > 0 && gcd(nums[end], nums[(*index)[len(*index)-1]]) > 1 {
+		return indexBefore
+	}
+
+	*index = append(*index, end)
+	return indexBefore + 1
+}
+
+func gcd(a, b int) int {
+	for b > 0 {
+		a, b = b, a%b
+	}
+	return a
 }
 
 func reversePairs(nums []int) int {
